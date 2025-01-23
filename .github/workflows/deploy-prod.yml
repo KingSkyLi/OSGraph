@@ -2,12 +2,6 @@ name: Deploy-Prod
 
 on:
   workflow_dispatch:
-    inputs:
-      branch:
-        description: "The branch to deploy"
-        required: true
-        default: "release" # 默认分支
-        type: string
 
 jobs:
   deploy-to-server:
@@ -20,6 +14,7 @@ jobs:
           PROD_USER: ${{ secrets.PROD_USER }}
           PROD_PWD: ${{ secrets.PROD_PWD }}
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          DEPLOY_BRANCH: ${{ github.ref_name }}
         run: |
           sshpass -p "$PROD_PWD" ssh -o StrictHostKeyChecking=no $PROD_USER@$PROD_HOST << EOF
           set -e
